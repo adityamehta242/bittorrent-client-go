@@ -46,7 +46,7 @@ A simple BitTorrent client implementation written in Go that can download files 
 
 ```bash
 # Windows
-./bittorrent-client.exe <torrent-file> <output-file>
+bittorrent-client.exe <torrent-file> <output-file>
 
 # macOS/Linux
 ./bittorrent-client <torrent-file> <output-file>
