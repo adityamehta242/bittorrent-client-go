@@ -62,7 +62,7 @@ A simple BitTorrent client implementation written in Go that can download files 
 **Download Ubuntu ISO:**
 ```bash
 # Windows
-./bittorrent-client.exe ubuntu-22.04.torrent ubuntu-22.04.iso
+bittorrent-client.exe ubuntu-22.04.torrent ubuntu-22.04.iso
 
 # macOS/Linux
 ./bittorrent-client ubuntu-22.04.torrent ubuntu-22.04.iso
@@ -71,7 +71,7 @@ A simple BitTorrent client implementation written in Go that can download files 
 **Download to specific directory:**
 ```bash
 # Windows
-./bittorrent-client.exe movie.torrent "C:\Downloads\movie.mp4"
+bittorrent-client.exe movie.torrent "C:\Downloads\movie.mp4"
 
 # macOS/Linux
 ./bittorrent-client movie.torrent "/home/user/Downloads/movie.mp4"
