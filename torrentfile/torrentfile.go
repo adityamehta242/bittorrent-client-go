@@ -42,6 +42,7 @@ type TorrentFile struct {
 	PieceLength int
 	Length      int
 	Name        string
+	peerID      [20]byte
 }
 
 // Open parses a .torrent file from a reader
@@ -52,6 +53,17 @@ func Open(r io.Reader) (*TorrentFile, error) {
 		return nil, err
 	}
 	return bto.toTorrentFile()
+}
+
+// OpenFile parses a .torrent file from a file path
+func OpenFile(path string) (*TorrentFile, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	return Open(file)
 }
 
 // toTorrentFile converts bencodeTorrent to TorrentFile
@@ -169,8 +181,6 @@ func (t *TorrentFile) calculatePieceSize(index int) int {
 	begin, end := t.calculateBoundsForPiece(index)
 	return end - begin
 }
-
-// ... (add these constants and types)
 
 const MaxBlockSize = 16384
 const MaxBacklog = 5
@@ -312,9 +322,6 @@ func (t *TorrentFile) startDownloadWorker(peer peers.Peer, workQueue chan *piece
 	}
 }
 
-// Add peerID field to TorrentFile struct and update accordingly
-var peerID [20]byte
-
 // DownloadToFile downloads the torrent and writes it to a file
 func (t *TorrentFile) DownloadToFile(path string) error {
 	var peerID [20]byte
@@ -322,6 +329,9 @@ func (t *TorrentFile) DownloadToFile(path string) error {
 	if err != nil {
 		return err
 	}
+
+	// Store peerID in the struct for use in workers
+	t.peerID = peerID
 
 	peers, err := t.requestPeers(peerID, 6881)
 	if err != nil {
